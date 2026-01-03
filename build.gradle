@@ -116,6 +116,7 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
             mod_authors                 : mod_authors,
             mod_description             : mod_description,
             mod_credits                 : mod_credits
+            // Add more here if adding/linking things like dependency versions to gradle.properties and mods.toml
     ]
     inputs.properties replaceProperties
     expand replaceProperties

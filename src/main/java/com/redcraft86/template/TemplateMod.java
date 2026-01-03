@@ -4,21 +4,28 @@ import org.slf4j.Logger;
 import com.mojang.logging.LogUtils;
 
 import com.redcraft86.template.configs.*;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.server.ServerStartingEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.bus.api.IEventBus;
 
 @Mod(TemplateMod.MOD_ID)
 public class TemplateMod {
     public static final String MOD_ID = "template";
-    private static final Logger LOGGER = LogUtils.getLogger();
+    public static final Logger LOGGER = LogUtils.getLogger();
 
-    public TemplateMod(FMLJavaModLoadingContext context)
-    {
-        IEventBus modEventBus = context.getModEventBus();
+    public TemplateMod(IEventBus modEventBus, ModContainer modContainer) {
+        NeoForge.EVENT_BUS.register(this);
 
-        context.registerConfig(ModConfig.Type.CLIENT, ClientCfg.SPEC);
-        context.registerConfig(ModConfig.Type.COMMON, CommonCfg.SPEC);
+        modContainer.registerConfig(ModConfig.Type.CLIENT, ClientCfg.SPEC);
+        modContainer.registerConfig(ModConfig.Type.COMMON, CommonCfg.SPEC);
+    }
+
+    @SubscribeEvent
+    public void onServerStarting(ServerStartingEvent event) {
     }
 }

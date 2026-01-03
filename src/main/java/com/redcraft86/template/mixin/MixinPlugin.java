@@ -7,7 +7,7 @@ import java.util.HashSet;
 import org.slf4j.Logger;
 import com.mojang.logging.LogUtils;
 import org.objectweb.asm.tree.ClassNode;
-import net.minecraftforge.fml.loading.FMLLoader;
+import net.neoforged.fml.loading.FMLLoader;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 

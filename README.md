@@ -1,6 +1,6 @@
 ## Multi-Mod workspace for NeoForge in Minecraft 1.21.1
 
-Open up this folder as a project in IntelliJ IDEA and get started!
+Open up this folder/workspace as a project in IntelliJ IDEA and get started!
 
 ### Adding a mod
 To add a mod, simply create a new folder in the directory and implement it the same way `SampleLib` or `SampleMod` is implemented. 

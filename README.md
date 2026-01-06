@@ -18,7 +18,7 @@ The typical Gradle commands you'd use when modding will still work, just slightl
 (Don't click the fancy play buttons unless intended as they will actually run the commands)
 - `./gradlew publishToMavenLocal` will locally publish ALL your mods under `/Users/USERNAME/.m2/repository/YOUR_MOD_GROUP/ModName`  
 If you want to be specific with which mod you publish, use `./gradlew :ModName:publishToMavenLocal`  
-<br>
+
 - `./gradlew build` will build ALL your mods into `.jar` files under `/ModName/build/libs`  
 If you want to be specific with which mod you build, use `./gradlew :ModName:build`
 

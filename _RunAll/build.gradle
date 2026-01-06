@@ -1,0 +1,76 @@
+plugins {
+    id 'java-library'
+    id 'net.neoforged.moddev' version '2.0.137'
+}
+
+
+
+/////////////////////////
+// Add more mods here! //
+/////////////////////////
+dependencies {
+    implementation project(":SampleLib")
+    implementation project(":SampleMod")
+}
+
+
+
+version = "1.0"
+group = "com.redcraft86.${mod_id}"
+
+base {
+    archivesName = mod_id
+}
+
+jar {
+    archiveFileName = "${mod_id}.jar"
+}
+
+neoForge {
+
+    version = project.neoforge_version
+
+    parchment {
+        mappingsVersion = project.mappings_version
+        minecraftVersion = project.minecraft_version
+    }
+
+    runs {
+        client {
+            client()
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        }
+
+        server {
+            server()
+            programArgument '--nogui'
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        }
+    }
+
+    mods {
+        "${mod_id}" {
+            sourceSet(sourceSets.main)
+        }
+    }
+}
+
+var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
+    var replaceProperties = [
+            minecraft_version           : minecraft_version,
+            minecraft_version_range     : minecraft_version_range,
+            neoforge_version            : neoforge_version,
+            neoforge_version_range      : neoforge_version_range,
+            loader_version_range        : loader_version_range,
+            mod_id                      : mod_id
+    ]
+
+    inputs.properties replaceProperties
+    expand replaceProperties
+
+    from "src/main/templates"
+    into "build/generated/sources/modMetadata"
+}
+
+sourceSets.main.resources.srcDir generateModMetadata
+neoForge.ideSyncTask generateModMetadata

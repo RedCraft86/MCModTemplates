@@ -1,150 +1,60 @@
-/* Initial Setup: Let gradle project run and reload if needed
- * Local Publish: ./gradlew publishToMavenLocal
- * Make Jar File: ./gradlew build
- */
-
 plugins {
     id 'idea'
-    id 'java-library'
-    id 'maven-publish'
-    id 'net.neoforged.moddev' version '2.0.137'
 }
 
 tasks.named('wrapper', Wrapper).configure {
     distributionType = Wrapper.DistributionType.BIN
 }
 
-group = mod_group_id
-version = "${minecraft_version}-${mod_version}"
+version = '1.0'
+group = 'com.mcmodding.workspace'
 
-base {
-    archivesName = mod_id
-}
+subprojects {
+    apply plugin: 'java'
 
-jar {
-    archiveFileName = "${mod_id}-${minecraft_version}-${mod_version}.jar"
-}
-
-repositories {
-    mavenLocal()
-
-    maven {
-        url = 'https://maven.minecraftforge.net/'
+    tasks.withType(JavaCompile).configureEach {
+        options.encoding = 'UTF-8'
     }
 
-    maven {
-        url = 'https://www.cursemaven.com'
-    }
+    java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
-    maven {
-        url "https://api.modrinth.com/maven"
-    }
-}
-
-java.toolchain.languageVersion = JavaLanguageVersion.of(21)
-
-neoForge {
-
-    version = project.neoforge_version
-
-    parchment {
-        mappingsVersion = project.mappings_version
-        minecraftVersion = project.minecraft_version
-    }
-
-    runs {
-        client {
-            client()
-            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
-        }
-
-        server {
-            server()
-            programArgument '--nogui'
-            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
-        }
-
-        gameTestServer {
-            type = "gameTestServer"
-            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
-        }
-
-        data {
-            data()
-            programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
-        }
-
-        configureEach {
-            systemProperty 'forge.logging.markers', 'REGISTRIES'
-            logLevel = org.slf4j.event.Level.DEBUG
+    idea {
+        module {
+            downloadSources = true
+            downloadJavadoc = true
         }
     }
 
-    mods {
-        "${mod_id}" {
-            sourceSet(sourceSets.main)
-        }
+    configurations {
+        runtimeClasspath.extendsFrom localRuntime
     }
-}
 
-sourceSets.main.resources { srcDir 'src/generated/resources' }
-
-configurations {
-    runtimeClasspath.extendsFrom localRuntime
-}
-
-dependencies {
-    // QOL Mods
-    localRuntime "curse.maven:catalogue-459701:6926815"
-    localRuntime "curse.maven:configured-457570:7276577"
-    localRuntime "curse.maven:cucumber-272335:7180790"
-    localRuntime "curse.maven:emi-580555:6420931"
-}
-
-var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
-    var replaceProperties = [
-            minecraft_version           : minecraft_version,
-            minecraft_version_range     : minecraft_version_range,
-            neoforge_version            : neoforge_version,
-            neoforge_version_range      : neoforge_version_range,
-            loader_version_range        : loader_version_range,
-            mod_id                      : mod_id,
-            mod_name                    : mod_name,
-            repo_name                   : repo_name,
-            mod_license                 : mod_license,
-            mod_version                 : mod_version,
-            mod_authors                 : mod_authors,
-            mod_description             : mod_description,
-            mod_credits                 : mod_credits
-            // Add more here if adding/linking things like dependency versions to gradle.properties and mods.toml
-    ]
-    inputs.properties replaceProperties
-    expand replaceProperties
-    from "src/main/templates"
-    into "build/generated/sources/modMetadata"
-}
-
-sourceSets.main.resources.srcDir generateModMetadata
-neoForge.ideSyncTask generateModMetadata
-
-publishing {
-    publications {
-        register('mavenJava', MavenPublication) {
-            from components.java
-        }
-    }
     repositories {
+        mavenCentral()
         mavenLocal()
+
+        /**
+         * Add your shared/common maven URLs here
+         */
+        maven { url = 'https://www.cursemaven.com' }
+        maven { url = 'https://api.modrinth.com/maven' }
+        maven { url = 'https://maven.neoforged.net/releases' }
     }
-}
 
-tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8'
-}
-
-idea {
-    module {
-        downloadSources = true
-        downloadJavadoc = true
+    dependencies {
+        /**
+         * Add your shared/common runtime mods here
+         * While you can add actual dependencies here it is recommended that you keep those restricted per mod
+         * The purpose of this is to load additional third party mods for when you play test your own mods
+         * For instance, I always run these alongside testing my own mods:
+         *      Catalogue - Nice and clean mod menu screen
+         *      Configured - Nice and clean mod config screen
+         *      Cucumber - Showing item Tags and NBT/DataComponents while holding down keys
+         *      EMI - JEI just didn't work for me for some reason
+         */
+        localRuntime 'curse.maven:catalogue-459701:6926815'
+        localRuntime 'curse.maven:configured-457570:7276577'
+        localRuntime 'curse.maven:cucumber-272335:7180790'
+        localRuntime 'curse.maven:emi-580555:6420931'
     }
 }

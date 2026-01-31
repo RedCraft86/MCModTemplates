@@ -3,7 +3,7 @@ loaderVersion="${loader_version_range}"
 license="MIT"
 
 [[mods]]
-version="1.0"
+    version="1.0"
     modId="modrunner"
     displayName="Mod Runner"
     description='''Simple utility mod to run all mods in this workspace'''

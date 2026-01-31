@@ -4,7 +4,6 @@
  */
 
 plugins {
-    id 'eclipse'
     id 'idea'
     id 'maven-publish'
     id 'net.minecraftforge.gradle' version '[6.0,6.2)'
@@ -12,15 +11,15 @@ plugins {
     id 'org.spongepowered.mixin' version '0.7.+'
 }
 
-version = mod_version
 group = mod_group_id
+version = "${minecraft_version}-${mod_version}"
 
 base {
     archivesName = mod_id
 }
 
 jar {
-    archiveFileName = "${mod_id}-${mod_version}-${minecraft_version}.jar"
+    archiveFileName = "${mod_id}-${minecraft_version}-${mod_version}.jar"
 }
 
 mixin {
@@ -32,11 +31,13 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
 minecraft {
-    mappings channel: mapping_channel, version: "${mapping_version}-${minecraft_version}"
+    mappings channel: "parchment", version: "${mapping_version}-${minecraft_version}"
 
     copyIdeResources = true
 
-    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+    if (file('src/main/resources/META-INF/accesstransformer.cfg').exists()) {
+        accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+    }
 
     runs {
         configureEach {
@@ -75,19 +76,12 @@ minecraft {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
+    mavenCentral()
     mavenLocal()
 
-    maven {
-        url = 'https://maven.minecraftforge.net/'
-    }
-
-    maven {
-        url = 'https://www.cursemaven.com'
-    }
-
-    maven {
-        url "https://api.modrinth.com/maven"
-    }
+    maven { url = 'https://www.cursemaven.com' }
+    maven { url = 'https://api.modrinth.com/maven' }
+    maven { url = 'https://maven.neoforged.net/releases' }
 }
 
 dependencies {
@@ -109,15 +103,15 @@ tasks.named('processResources', ProcessResources).configure {
             forge_version               : forge_version,
             forge_version_range         : forge_version_range,
             loader_version_range        : loader_version_range,
+
             mod_id                      : mod_id,
             mod_name                    : mod_name,
             repo_name                   : repo_name,
             mod_license                 : mod_license,
             mod_version                 : mod_version,
-            mod_authors                 : mod_authors,
+            mod_author                  : mod_author,
             mod_description             : mod_description,
             mod_credits                 : mod_credits
-            // Add more here if adding/linking things like dependency versions to gradle.properties and mods.toml
     ]
     inputs.properties replaceProperties
 
@@ -130,11 +124,11 @@ tasks.named('jar', Jar).configure {
     manifest {
         attributes([
                 'Specification-Title'     : mod_id,
-                'Specification-Vendor'    : mod_authors,
+                'Specification-Vendor'    : mod_author,
                 'Specification-Version'   : '1',
                 'Implementation-Title'    : project.name,
                 'Implementation-Version'  : project.jar.archiveVersion,
-                'Implementation-Vendor'   : mod_authors,
+                'Implementation-Vendor'   : mod_author,
                 'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }

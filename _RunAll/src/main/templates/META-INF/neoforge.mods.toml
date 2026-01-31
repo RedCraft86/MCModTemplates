@@ -4,10 +4,10 @@ license="MIT"
 
 [[mods]]
     modId="${mod_id}"
-    version="${mod_version}"
-    authors="${mod_author}"
     displayName="Mod Runner"
     description='''Simple utility mod to run all mods in this workspace'''
+    authors="NoAuthor"
+    version="1.0"
 
 [[dependencies.${mod_id}]]
     modId="neoforge"

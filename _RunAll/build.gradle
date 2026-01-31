@@ -16,7 +16,7 @@ dependencies {
 
 
 version = "1.0"
-group = "com.redcraft86.${mod_id}"
+group = "com.mcmodding.${mod_id}"
 
 base {
     archivesName = mod_id

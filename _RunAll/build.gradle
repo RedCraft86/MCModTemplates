@@ -15,6 +15,7 @@ dependencies {
 
 
 
+
 version = "1.0"
 group = "com.mcmodding.${mod_id}"
 

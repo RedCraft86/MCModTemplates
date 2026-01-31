@@ -1,0 +1,98 @@
+plugins {
+    id 'idea'
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)' apply(false)
+}
+
+version = '1.0'
+group = 'com.mcmodding.workspace'
+
+subprojects {
+    apply plugin: 'idea'
+	apply plugin: 'java'
+    apply plugin: 'net.minecraftforge.gradle'
+
+    tasks.withType(JavaCompile).configureEach {
+        options.encoding = 'UTF-8'
+    }
+
+    java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+
+    idea {
+        module {
+            downloadSources = true
+            downloadJavadoc = true
+        }
+    }
+
+    println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
+    minecraft {
+        copyIdeResources = true
+
+        if (file('src/main/resources/META-INF/accesstransformer.cfg').exists()) {
+            accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+        }
+    }
+
+    repositories {
+        mavenCentral()
+        mavenLocal()
+
+        /**
+         * Add your shared/common maven URLs here
+         */
+        maven { url = 'https://www.cursemaven.com' }
+        maven { url = 'https://api.modrinth.com/maven' }
+        maven { url = 'https://maven.neoforged.net/releases' }
+    }
+
+    dependencies {
+        minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+
+        /**
+         * Add your shared/common runtime mods here
+         * While you can add actual dependencies here it is recommended that you keep those restricted per mod
+         * The purpose of this is to load additional third party mods for when you play test your own mods
+         * For instance, I always run these alongside testing my own mods:
+         *      Catalogue - Nice and clean mod menu screen
+         *      Configured - Nice and clean mod config screen
+         *      Cucumber - Showing item Tags and NBT/DataComponents while holding down keys
+         *      EMI - JEI just didn't work for me for some reason
+         */
+        runtimeOnly fg.deobf("curse.maven:catalogue-459701:4766090")
+        runtimeOnly fg.deobf("curse.maven:configured-457570:5180900")
+        runtimeOnly fg.deobf("curse.maven:cucumber-272335:7180783")
+        runtimeOnly fg.deobf("curse.maven:emi-580555:6420945")
+    }
+
+    tasks.matching { it.name == "genIntellijRuns" }.configureEach {
+        finalizedBy(rootProject.tasks.named("fixIntellijRuns"))
+    }
+}
+
+tasks.register('fixIntellijRuns') {
+    doLast {
+        def runDir = file(".idea/runConfigurations")
+        if (!runDir.exists()) {
+            logger.lifecycle("No IntelliJ runConfigurations directory found")
+            return
+        }
+
+        runDir.eachFile { file ->
+            if (!file.name.endsWith(".xml")) return
+
+            def text = file.getText("UTF-8")
+            def fixed = text.replaceAll(
+                    /<module name="([^"]+)\.main"\/>/,
+                    "<module name=\"${rootProject.name}.\$1.main\"/>"
+            ).replaceAll(
+                    "=\" RunAll run",
+                    "=\"RunAll run"
+            )
+
+            if (text != fixed) {
+                file.write(fixed, "UTF-8")
+                logger.lifecycle("Fixed IntelliJ run: ${file.name}")
+            }
+        }
+    }
+}

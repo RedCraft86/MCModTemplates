@@ -1,0 +1,72 @@
+plugins {
+    id 'org.parchmentmc.librarian.forgegradle' version '1.+'
+}
+
+
+
+
+/////////////////////////
+// Add more mods here! //
+/////////////////////////
+dependencies {
+    implementation project(":SampleLib")
+    implementation project(":SampleMod")
+}
+
+
+
+
+version = "1.0"
+group = "com.mcmodding.${mod_id}"
+
+base {
+    archivesName = mod_id
+}
+
+jar {
+    archiveFileName = "${mod_id}.jar"
+}
+
+minecraft {
+    mappings channel: "parchment", version: "${mapping_version}-${minecraft_version}"
+
+    runs {
+        configureEach {
+            workingDirectory project.file('run')
+
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+
+            mods {
+                "${mod_id}" {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        client {
+            property 'forge.enabledGameTestNamespaces', mod_id
+        }
+
+        server {
+            property 'forge.enabledGameTestNamespaces', mod_id
+            args '--nogui'
+        }
+    }
+}
+
+tasks.named('processResources', ProcessResources).configure {
+    var replaceProperties = [
+            minecraft_version           : minecraft_version,
+            minecraft_version_range     : minecraft_version_range,
+            forge_version               : forge_version,
+            forge_version_range         : forge_version_range,
+            loader_version_range        : loader_version_range,
+            mod_id                      : mod_id
+    ]
+    inputs.properties replaceProperties
+
+    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
+        expand replaceProperties + [project: project]
+    }
+}

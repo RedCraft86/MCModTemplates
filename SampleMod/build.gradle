@@ -62,7 +62,7 @@ neoForge {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 dependencies {
-    // Common library
+    // Dependency
     implementation project(":SampleLib")
 }
 

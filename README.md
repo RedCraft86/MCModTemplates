@@ -25,7 +25,7 @@ If you want to be specific with which mod you publish, use `./gradlew :ModName:p
 - `./gradlew build` will build ALL your mods into `.jar` files under `/ModName/build/libs`  
 If you want to be specific with which mod you build, use `./gradlew :ModName:build`
 
-In both cases, `ModName` is what you have named the folder. In this case it will be `SampleLib` or `SampleMod`  
+In all cases, `ModName` is what you have named the folder. In this case it will be `SampleLib` or `SampleMod`  
 Any other command can be formatted in the same way as well and should work.
 
 ## Important Note for this Workspace
@@ -36,7 +36,7 @@ Any other command can be formatted in the same way as well and should work.
 run `./gradlew fixIntellijRuns` (Unlike other commands I don't recommend running this per project)  
 This is a simple (and slightly jank) script I wrote to automatically fill out the missing part of the module field.
 
-**Manual Method:**  
+**Manual Method (IntelliJ IDEA):**  
 In the root project, go to `.idea/runConfigurations`.  
 In it, you will find a bunch of `.xml` files, these are your run configs.  
 In each file, find `module name` and prepend the workspace name to the value. (default is `ModWorkspace-1.20.1`)  

@@ -48,8 +48,8 @@ subprojects {
         // Shared QOL mods
         localRuntime "maven.modrinth:better-modlist:1.1.22-neoforge"
         localRuntime "maven.modrinth:emi:1.1.24+1.21.1+neoforge"
-        localRuntime "maven.modrinth:cucumber:8.0.15-neoforge"
-        localRuntime "maven.modrinth:jade:15.10.4+neoforge"
+        localRuntime "maven.modrinth:cucumber:8.0.16-neoforge"
+        localRuntime "maven.modrinth:jade:15.10.5+neoforge"
 
         localRuntime "maven.modrinth:ferrite-core:7.0.3-neoforge"
         localRuntime "maven.modrinth:c2me-neoforge:0.3.0+alpha.0.93+1.21.1"

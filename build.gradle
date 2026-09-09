@@ -1,0 +1,63 @@
+plugins {
+    id 'net.neoforged.moddev' version '2.0.146' apply false
+}
+
+tasks.named('wrapper', Wrapper).configure {
+    distributionType = Wrapper.DistributionType.BIN
+}
+
+subprojects {
+    apply plugin: 'idea'
+    apply plugin: 'java-library'
+    apply plugin: 'maven-publish'
+    apply plugin: 'net.neoforged.moddev'
+
+    tasks.withType(JavaCompile).configureEach {
+        options.encoding = 'UTF-8'
+    }
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(21)
+        }
+    }
+
+    idea {
+        module {
+            downloadSources = true
+            downloadJavadoc = true
+        }
+    }
+
+    configurations {
+        runtimeClasspath.extendsFrom localRuntime
+    }
+
+    repositories {
+        mavenCentral()
+        mavenLocal()
+
+        /**
+         * Add your shared/common maven URLs here
+         */
+        maven { url = 'https://www.cursemaven.com' }
+        maven { url = 'https://api.modrinth.com/maven' }
+    }
+
+    dependencies {
+        /**
+         * Add your shared/common runtime mods here
+         * While you can add actual dependencies here it is recommended that you keep those restricted per mod
+         * The purpose of this is to load additional third party mods for when you play test your own mods
+         * For instance, I always run these alongside testing my own mods:
+         *      Better Modlist (sbpqhzIG) - Cleaner modlist and config screens for every supported mods.
+         *      Cucumber (Rw1NrDzF) - Showing item Tags and DataComponents while holding down keys.
+         *      EMI (fRiHVvU7) - Similar to JEI, just a QoL mod for testing since you can quickly access things.
+         *      Jade (nvQzSEkH) - Another QoL like EMI's inclusion to see blocks being looked at.
+         */
+        localRuntime 'maven.modrinth:sbpqhzIG:XavNSFnf'
+        localRuntime 'maven.modrinth:Rw1NrDzF:8421rqFF'
+        localRuntime 'maven.modrinth:fRiHVvU7:5sIPA1To'
+        localRuntime 'maven.modrinth:nvQzSEkH:eYz2YBGT'
+    }
+}

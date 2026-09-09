@@ -1,0 +1,21 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        maven {
+            url = "https://maven.neoforged.net/releases"
+        }
+    }
+}
+
+plugins {
+    id 'org.gradle.toolchains.foojay-resolver-convention' version '1.0.0'
+}
+
+rootProject.name = "ModWorkspace-1.21.1"
+
+/////////////////////////
+// Add more mods here! //
+/////////////////////////
+include("_RunAll")
+//include("SampleLib")
+//include("SampleMod")

@@ -17,5 +17,5 @@ rootProject.name = "ModWorkspace-1.21.1"
 // Add more mods here! //
 /////////////////////////
 include("_RunAll")
-//include("SampleLib")
-//include("SampleMod")
+include("SampleLib")
+include("SampleMod")

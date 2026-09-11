@@ -1,0 +1,11 @@
+{
+  "samplemod.configuration.title": "Sample Mod Configs",
+  "samplemod.configuration.section.samplemod.client.toml": "Sample Mod Configs",
+  "samplemod.configuration.section.samplemod.client.toml.title": "Sample Mod Configs",
+  "samplemod.configuration.section.samplemod.common.toml": "Sample Mod Configs",
+  "samplemod.configuration.section.samplemod.common.toml.title": "Sample Mod Configs",
+  "samplemod.configuration.funnySection": "Funny Section",
+  "samplemod.configuration.funnyBoolean": "Funny Boolean",
+  "samplemod.configuration.unfunnySection": "Unfunny Section",
+  "samplemod.configuration.unfunnyNumber": "Unfunny Number"
+}

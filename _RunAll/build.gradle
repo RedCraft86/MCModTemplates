@@ -2,33 +2,34 @@
 // Add more mods here! //
 /////////////////////////
 dependencies {
-//    implementation project(":SampleLib")
-//    implementation project(":SampleMod")
+    implementation project(":SampleLib")
+    implementation project(":SampleMod")
 }
 
 
 version = "1.0"
 group = "com.mcmodding.${mod_id}"
-jar.archiveFileName = "${mod_id}-1.21.1-1.0.jar"
+jar.archiveFileName = "${mod_id}-${minecraft_version}-1.0.jar"
 base.archivesName = mod_id
 
 neoForge {
-    version = project.neo_version
+    version = neoforge_version
 
     parchment {
-        mappingsVersion = project.parchment_version
-        minecraftVersion = project.minecraft_version
+        mappingsVersion = parchment_version
+        minecraftVersion = minecraft_version
     }
+
     runs {
         client {
             client()
-            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+            systemProperty 'neoforge.enabledGameTestNamespaces', mod_id
         }
 
         server {
             server()
             programArgument '--nogui'
-            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+            systemProperty 'neoforge.enabledGameTestNamespaces', mod_id
         }
 
         configureEach {
@@ -47,10 +48,11 @@ neoForge {
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
     var replaceProperties = [
             minecraft_version      : minecraft_version,
-            neo_version            : neo_version,
+            neoforge_version            : neoforge_version,
             loader_version_range   : loader_version_range,
             mod_id                 : mod_id
     ]
+
     inputs.properties replaceProperties
     expand replaceProperties
     from "src/main/templates"

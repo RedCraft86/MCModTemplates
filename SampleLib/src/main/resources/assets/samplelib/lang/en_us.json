@@ -1,0 +1,11 @@
+{
+  "samplelib.configuration.title": "Sample Library Configs",
+  "samplelib.configuration.section.samplelib.client.toml": "Sample Library Configs",
+  "samplelib.configuration.section.samplelib.client.toml.title": "Sample Library Configs",
+  "samplelib.configuration.section.samplelib.common.toml": "Sample Library Configs",
+  "samplelib.configuration.section.samplelib.common.toml.title": "Sample Library Configs",
+  "samplelib.configuration.funnySection": "Funny Section",
+  "samplelib.configuration.funnyBoolean": "Funny Boolean",
+  "samplelib.configuration.unfunnySection": "Unfunny Section",
+  "samplelib.configuration.unfunnyNumber": "Unfunny Number"
+}

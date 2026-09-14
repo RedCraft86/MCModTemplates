@@ -42,6 +42,7 @@ subprojects {
          */
         maven { url = 'https://www.cursemaven.com' }
         maven { url = 'https://api.modrinth.com/maven' }
+        maven { url = 'https://maven.midnightdust.eu/releases' }
     }
 
     dependencies {
@@ -59,5 +60,16 @@ subprojects {
         localRuntime 'maven.modrinth:Rw1NrDzF:8421rqFF'
         localRuntime 'maven.modrinth:fRiHVvU7:5sIPA1To'
         localRuntime 'maven.modrinth:nvQzSEkH:eYz2YBGT'
+
+        /**
+         * I use midnightlib for simple config file implementations.
+         * But this is also an example of how to do Jar-in-Jar on a global scope.
+         */
+        implementation "eu.midnightdust:midnightlib:${midnightlib_version}"
+        jarJar("eu.midnightdust:midnightlib:[${midnightlib_version},)") {
+            version {
+                prefer midnightlib_version
+            }
+        }
     }
 }
